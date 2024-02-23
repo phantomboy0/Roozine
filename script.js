@@ -21,7 +21,6 @@ function post() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(jsonData),
   })
@@ -38,7 +37,7 @@ function post() {
 }
 
 function getData() {
-  fetch("https://roozine.cyclic/getData")
+  fetch("https://roozine.cyclic.app/getData")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data from db.json:", data);

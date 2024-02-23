@@ -1,5 +1,6 @@
 const express = require("express");
-const fs = require("fs");
+//const fs = require("fs");
+const fs = require("@cyclic.sh/s3fs");
 const cors = require("cors");
 const app = express();
 const port = 3000;
