@@ -2,7 +2,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: blueviolet;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+body {
+  background-color: #191919;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#new-post {
+  background-color: #141414;
+
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  border-radius: 15px 15px 0 0;
+  padding: 10px;
+  width: 300px; /* Adjust width as needed */
 }
 
 #posts {
@@ -14,13 +37,54 @@
 }
 
 .post-box {
-  background-color: rgb(81, 158, 221);
+  background-color: #758bfd;
   width: 300px;
   border: 2px solid black;
   padding: 10px;
+  border-radius: 5px;
 }
 #error {
   font-style: bold;
   color: red;
   background-color: black;
+  font-size: small;
+}
+
+#message {
+  width: 100%;
+  margin-top: 10px;
+  resize: none;
+  margin-left: -4px;
+  background-color: #2b2a33;
+  border: 2px solid #00a5cf;
+  color: white;
+  font-size: larger;
+  border-radius: 5px;
+}
+#message::active {
+  border: 3px solid blueviolet;
+}
+
+#username {
+  width: 100%;
+  margin-left: -4px;
+  border-radius: 5px;
+  font-size: larger;
+  border: 2px solid #00a5cf;
+  background-color: #2b2a33;
+  color: white;
+}
+
+#postBtn {
+  width: 100%;
+  background-color: #7ae582;
+  border: none;
+  height: 30px;
+  font-size: larger;
+  border-radius: 5px;
+}
+
+#empty {
+  height: 600px;
+  background-color: azure;
 }

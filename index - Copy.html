@@ -8,21 +8,26 @@
   </head>
   <body>
     <div class="main-div">
-      <div id="new-post">
+      <div>
         <input placeholder="Username" id="username" type="text" /><br />
         <textarea
           placeholder="Say Somthing..."
           name=""
           id="message"
-          rows="7"
+          cols="30"
+          rows="10"
         ></textarea
         ><br />
-        <p id="error"></p>
-        <button id="postBtn" onclick="post()" type="button">Post</button><br />
+<p id="error"></p>
+        <button onclick="post()" type="button">Post</button>
+        <button onclick="getData()" type="button">Get JSON</button>
       </div>
+      
+    </div main>
+    <div id="posts">
+      
     </div>
-    <div id="posts"></div>
-
+   
     <script src="script.js"></script>
   </body>
 </html>

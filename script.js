@@ -5,6 +5,10 @@ const posts = document.getElementById("posts");
 const errorTxt = document.getElementById("error");
 
 function post() {
+  if (username.value == "" || message.value == "") {
+    errorTxt.innerText = "Filed Are empty!";
+    return;
+  }
   console.log(username.value, message.value);
 
   const date = new Date();
