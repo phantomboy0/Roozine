@@ -29,6 +29,7 @@ function post() {
       console.log(data);
       username.value = "";
       message.value = "";
+      getData();
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -61,7 +62,7 @@ function showPosts(data) {
     <p>${post.msg}</p>
     <p>${post.date}</p>
   </div>`;
-    posts.append(newPost);
+    posts.prepend(newPost);
   });
 }
 
