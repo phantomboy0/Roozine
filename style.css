@@ -19,3 +19,8 @@
   border: 2px solid black;
   padding: 10px;
 }
+#error {
+  font-style: bold;
+  color: red;
+  background-color: black;
+}

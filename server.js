@@ -33,6 +33,7 @@ app.post("/appendData", (req, res) => {
 
 app.get("/getData", (req, res) => {
   console.log("Request received at /getData"); // Add this line
+  console.log(`Server port on ${env.port}`);
   try {
     const data = JSON.parse(fs.readFileSync("db.json", "utf8"));
     res.json(data);

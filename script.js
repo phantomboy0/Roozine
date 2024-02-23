@@ -17,7 +17,7 @@ function post() {
       .padStart(2, 0)}:${date.getMinutes().toString().padStart(2, 0)}`,
   };
 
-  fetch("http://localhost:3000/appendData", {
+  fetch("https://roozine.cyclic.app/appendData", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,6 +28,8 @@ function post() {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+      username.value = "";
+      message.value = "";
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -36,7 +38,7 @@ function post() {
 }
 
 function getData() {
-  fetch("http://localhost:3000/getData")
+  fetch("https://roozine.cyclic/getData")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data from db.json:", data);
