@@ -1,6 +1,6 @@
 const express = require("express");
 //const fs = require("fs");
-const fs = require("@cyclic.sh/s3fs")(S3_BUCKET_NAME);
+const fs = require("@cyclic.sh/s3fs")("cyclic-gold-odd-swallow-eu-west-3");
 const cors = require("cors");
 const app = express();
 const port = 3000;
