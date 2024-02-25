@@ -105,8 +105,8 @@ body {
   border-radius: 25px;
 }
 
-#empty {
-  height: 600px;
+.empty {
+  height: 70px;
   background-color: azure;
 }
 .userid {
