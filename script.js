@@ -31,9 +31,9 @@ function post() {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      username.value = "";
-      message.value = "";
+
       getData();
+      afterPost();
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -95,4 +95,24 @@ newpostheader.addEventListener("click", () => {
   }
 });
 
+function afterPost() {
+  //hides the new post div
+  newpostheader.classList.remove("newpostheadershow");
+  newpost.classList.remove("newpostshow");
+  newpostheadericon.classList.remove("newpostheadershow");
+  newpostheader.classList.add("newpostheaderhide");
+  newpost.classList.add("newposthide");
+  newpostheadericon.classList.add("newpostheaderhide");
+  newPostIsShowing = false;
+
+  //reset the inputs
+  username.value = "";
+  message.value = "";
+}
 document.addEventListener("DOMContentLoaded", getData());
+
+const siteheader = document.getElementById("site-header");
+
+siteheader.addEventListener("click", () => {
+  window.location.href = "https://github.com/phantomboy0";
+});

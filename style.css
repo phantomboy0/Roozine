@@ -25,6 +25,7 @@ body {
   justify-content: center;
   min-height: 100vh;
   font-family: Bahnschrift;
+  flex-direction: column;
 }
 
 #new-post {
@@ -35,7 +36,7 @@ body {
   text-align: center;
   border-radius: 15px 15px 0 0;
   padding: 10px;
-  width: 320px; /* Adjust width as needed */
+  width: 340px; /* Adjust width as needed */
   word-wrap: break-word;
 }
 
@@ -133,6 +134,7 @@ body {
   border-radius: 25px;
   margin-bottom: 20px;
   margin-top: 10px;
+  padding: 3px;
 }
 
 .newpostheadershow {
@@ -204,4 +206,17 @@ body {
   to {
     bottom: -320px;
   }
+}
+
+#site-header {
+  color: white;
+  width: 340px;
+  background-color: #576cbc;
+  text-align: center;
+
+  text-justify: inter-cluster;
+  padding: 8px;
+  border-radius: 0 0 15px 15px;
+  font-size: 18px;
+  font-weight: 600;
 }
