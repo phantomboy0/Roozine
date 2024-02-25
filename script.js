@@ -62,12 +62,37 @@ function showPosts(data) {
     const newPost = document.createElement("div");
 
     newPost.innerHTML = `<div class="post-box">
-    <p>${post.user}</p>
-    <p>${post.msg}</p>
-    <p>${post.date}</p>
+    <p class="userid">${post.user}</p>
+    <p class="postmsg">${post.msg}</p>
+    <p class="postdate">${post.date}</p>
   </div>`;
     posts.prepend(newPost);
   });
 }
+
+const newpostheader = document.getElementById("newpostheader");
+const newpost = document.getElementById("new-post");
+const newpostheadericon = document.getElementById("newpostheadericon");
+
+let newPostIsShowing = false;
+newpostheader.addEventListener("click", () => {
+  if (!newPostIsShowing) {
+    newpostheader.classList.remove("newpostheaderhide");
+    newpost.classList.remove("newposthide");
+    newpostheadericon.classList.remove("newpostheaderhide");
+    newpostheader.classList.add("newpostheadershow");
+    newpost.classList.add("newpostshow");
+    newpostheadericon.classList.add("newpostheadershow");
+    newPostIsShowing = true;
+  } else {
+    newpostheader.classList.remove("newpostheadershow");
+    newpost.classList.remove("newpostshow");
+    newpostheadericon.classList.remove("newpostheadershow");
+    newpostheader.classList.add("newpostheaderhide");
+    newpost.classList.add("newposthide");
+    newpostheadericon.classList.add("newpostheaderhide");
+    newPostIsShowing = false;
+  }
+});
 
 document.addEventListener("DOMContentLoaded", getData());

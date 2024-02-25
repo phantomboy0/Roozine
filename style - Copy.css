@@ -14,9 +14,9 @@
 }
 
 .post-box {
-  background-color: rgb(81, 158, 221);
+  background-color: transparent;
   width: 300px;
-  border: 2px solid black;
+  border: 2px solid #19376d;
   padding: 10px;
 }
 #error {
