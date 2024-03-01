@@ -1,6 +1,6 @@
 const express = require("express");
 //const fs = require("fs");
-const fs = require("@cyclic.sh/s3fs")("cyclic-gold-odd-swallow-eu-west-3");
+const fs = require("fs");
 const cors = require("cors");
 const { log } = require("console");
 const app = express();
