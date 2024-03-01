@@ -34,11 +34,11 @@ app.post("/appendData", (req, res) => {
 
   try {
     lastUsedId = JSON.parse(fs.readFileSync("id.json", "utf8"));
+    ++lastUsedId.lastID;
+    req.body.id = lastUsedId.lastID;
   } catch (error) {
     console.error("Error reading id.json:", error.message);
   }
-  ++lastUsedId.lastID;
-  req.body.id = lastUsedId.lastID;
 
   fs.writeFileSync("id.json", JSON.stringify(lastUsedId, null, 2), "utf8");
 
