@@ -124,6 +124,34 @@ app.post("/react", (req, res) => {
   res.json({ success: true, message: "Data appended to db.json" });
 });
 
+app.post("/create", (req, res) => {
+  // Data for db.json
+  const dbData = {
+    users: [],
+  };
+
+  // Data for id.json
+  const idData = {
+    lastID: 8,
+  };
+
+  // Convert data to JSON strings
+  const dbJson = JSON.stringify(dbData, null, 2);
+  const idJson = JSON.stringify(idData, null, 2);
+
+  // Write db.json
+  fs.writeFile("db.json", dbJson, (err) => {
+    if (err) throw err;
+    console.log("db.json has been created.");
+  });
+
+  // Write id.json
+  fs.writeFile("id.json", idJson, (err) => {
+    if (err) throw err;
+    console.log("id.json has been created.");
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
