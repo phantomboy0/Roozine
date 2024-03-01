@@ -40,13 +40,23 @@ app.post("/appendData", (req, res) => {
     console.error("Error reading id.json:", error.message);
   }
 
-  fs.writeFileSync("id.json", JSON.stringify(lastUsedId, null, 2), "utf8");
+  fs.writeFileSync(
+    "id.json",
+    JSON.stringify(
+      {
+        lastID: 8,
+      },
+      null,
+      2
+    ),
+    "utf8"
+  );
 
   // Append the received data to the existing data
   existingData.push(receivedData);
 
   // Write the updated data back to the database.json file
-  fs.writeFileSync("db.json", JSON.stringify(existingData, null, 2), "utf8");
+  fs.writeFileSync("db.json", JSON.stringify([], null, 2), "utf8");
 
   // Send a response back to the client
   res.json({ success: true, message: "Data appended to db.json" });
@@ -122,34 +132,6 @@ app.post("/react", (req, res) => {
 
   // Send a response back to the client
   res.json({ success: true, message: "Data appended to db.json" });
-});
-
-app.post("/create", (req, res) => {
-  // Data for db.json
-  const dbData = {
-    users: [],
-  };
-
-  // Data for id.json
-  const idData = {
-    lastID: 8,
-  };
-
-  // Convert data to JSON strings
-  const dbJson = JSON.stringify(dbData, null, 2);
-  const idJson = JSON.stringify(idData, null, 2);
-
-  // Write db.json
-  fs.writeFile("db.json", dbJson, (err) => {
-    if (err) throw err;
-    console.log("db.json has been created.");
-  });
-
-  // Write id.json
-  fs.writeFile("id.json", idJson, (err) => {
-    if (err) throw err;
-    console.log("id.json has been created.");
-  });
 });
 
 app.listen(port, () => {
