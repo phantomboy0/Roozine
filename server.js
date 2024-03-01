@@ -42,23 +42,13 @@ app.post("/appendData", (req, res) => {
     console.error("Error reading id.json:", error.message);
   }
 
-  fs.writeFileSync(
-    "id.json",
-    JSON.stringify(
-      {
-        lastID: 8,
-      },
-      null,
-      2
-    ),
-    "utf8"
-  );
+  fs.writeFileSync("id.json", JSON.stringify(lastUsedId, null, 2), "utf8");
 
   // Append the received data to the existing data
   existingData.push(receivedData);
 
   // Write the updated data back to the database.json file
-  fs.writeFileSync("db.json", JSON.stringify([], null, 2), "utf8");
+  fs.writeFileSync("db.json", JSON.stringify(existingData, null, 2), "utf8");
 
   // Send a response back to the client
   res.json({ success: true, message: "Data appended to db.json" });
