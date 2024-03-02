@@ -36,7 +36,7 @@ function post() {
     .then((data) => {
       console.log(data);
 
-      //getData();
+      getData();
       afterPost();
     })
     .catch((error) => {
