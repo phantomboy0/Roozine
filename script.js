@@ -181,9 +181,8 @@ function afterPost() {
   username.value = "";
   message.value = "";
 }
-document.addEventListener("DOMContentLoaded", () => {
-  getData();
-});
+
+document.addEventListener("DOMContentLoaded", getData);
 
 const siteheader = document.getElementById("site-header");
 
@@ -212,7 +211,7 @@ function reaction(emote, postId) {
 
         localStorage.setItem(postId + "voted", true);
         changeReactionState(emote, postId);
-        // getData();
+        getData();
       })
       .catch((error) => {
         console.error("Error:", error);
