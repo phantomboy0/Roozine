@@ -235,6 +235,13 @@ body {
   height: 70px;
   border-radius: 15px;
   background-color: #19376d;
+  position: absolute;
+  top: 0;
+}
+
+#site-header-margin-margin {
+  width: 355px;
+  height: 70px;
 
   top: 0;
 }
