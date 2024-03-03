@@ -56,7 +56,7 @@ function getData() {
 
       showRecentPosts(data);
       sortPostsByReaction(data);
-
+      stopRotateLoading();
       cachedData = data;
     })
     .catch((error) => {
@@ -269,4 +269,17 @@ function changeShowState(state) {
   }
 }
 
+const loadingLogoInter = setInterval(rotateLoading, 10);
+let rotatedLoading = 90;
+function rotateLoading() {
+  const loadingIcon = document.getElementById("loading_icon");
+  loadingIcon.style.transform = `rotate(${rotatedLoading++}deg)`;
+  console.log(`rotate(${rotateLoading}deg)`);
+}
+
+function stopRotateLoading() {
+  clearInterval("loadingLogoInter");
+  const loadingIcon = document.getElementById("loading_icon");
+  loadingIcon.style.display = "none";
+}
 // Function to save styles in localStorage
