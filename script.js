@@ -7,13 +7,15 @@ const message = document.getElementById("message");
 const posts = document.getElementById("posts");
 const errorTxt = document.getElementById("error");
 
+const postBtn = document.getElementById("postBtn");
+
 function post() {
-  if (username.value == "" || message.value == "") {
+  if (username.value.trim() == "" || message.value.trim() == "") {
     errorTxt.innerText = "Filed Are empty!";
     return;
   }
   console.log(username.value, message.value);
-
+  postBtn.disabled = true;
   const date = new Date();
   var jsonData = {
     id: 0,
@@ -38,6 +40,7 @@ function post() {
 
       getData();
       afterPost();
+      postBtn.disabled = true;
     })
     .catch((error) => {
       console.error("Error:", error);
