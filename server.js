@@ -134,7 +134,7 @@ function chooseBestPostOfTheDay() {
   } catch (error) {
     console.error("somthing went wrong on reading db.json: " + error);
   }
-  console.log(TodaysPosts.lenght);
+  console.log(TodaysPosts.length);
   if (TodaysPosts.lenght < 1) {
     console.log("There is 0 posts to choose today?!");
     return;
@@ -150,7 +150,7 @@ function chooseBestPostOfTheDay() {
       BestPost = post;
     }
   });
-  console.log("the best post was: " + BestPost);
+  console.log("the best post was: #" + BestPost.id);
 }
 
 app.listen(port, () => {
