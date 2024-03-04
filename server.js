@@ -60,6 +60,7 @@ app.get("/getData", (req, res) => {
   try {
     const data = JSON.parse(fs.readFileSync("db.json", "utf8"));
     res.json(data);
+    chooseBestPostOfTheDay();
   } catch (error) {
     console.error("Error reading database.json:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
@@ -151,7 +152,7 @@ function chooseBestPostOfTheDay() {
   });
   console.log("the best post was: " + BestPost);
 }
-chooseBestPostOfTheDay();
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
