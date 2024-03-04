@@ -134,7 +134,7 @@ function chooseBestPostOfTheDay() {
   } catch (error) {
     console.error("somthing went wrong on reading db.json: " + error);
   }
-
+  console.log(TodaysPosts.lenght);
   if (TodaysPosts.lenght < 1) {
     console.log("There is 0 posts to choose today?!");
     return;
