@@ -126,6 +126,32 @@ app.post("/react", (req, res) => {
   res.json({ success: true, message: "Data appended to db.json" });
 });
 
+function chooseBestPostOfTheDay() {
+  let TodaysPosts = [];
+  try {
+    TodaysPosts = JSON.parse(fs.readFileSync("db.json"));
+  } catch (error) {
+    console.error("somthing went wrong on reading db.json: " + error);
+  }
+
+  if (TodaysPosts.lenght < 1) {
+    console.log("There is 0 posts to choose today?!");
+    return;
+  }
+  let BestPost;
+
+  BestPost = TodaysPosts[0];
+  TodaysPosts.forEach((post) => {
+    if (
+      BestPost.l + BestPost.d + BestPost.h + BestPost.s + BestPost.c <
+      post.l + post.d + post.h + post.s + post.c
+    ) {
+      BestPost = post;
+    }
+  });
+  console.log("the best post was: " + BestPost);
+}
+chooseBestPostOfTheDay();
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
