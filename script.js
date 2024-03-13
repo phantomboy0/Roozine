@@ -6,12 +6,13 @@ const message = document.getElementById("message");
 
 const posts = document.getElementById("posts");
 const errorTxt = document.getElementById("error");
+const posterrorTxt = document.getElementById("post-error");
 
 const postBtn = document.getElementById("postBtn");
 
 function post() {
   if (username.value.trim() == "" || message.value.trim() == "") {
-    errorTxt.innerText = "Filed Are empty!";
+    posterrorTxt.innerText = "Filed Are empty!";
     return;
   }
   console.log(username.value, message.value);
@@ -44,10 +45,11 @@ function post() {
     })
     .catch((error) => {
       console.error("Error:", error);
-      errorTxt.innerText = error;
+      showError(error);
     });
 }
 let cachedData = null;
+
 function getData() {
   fetch(`${ServerURL}/getData`)
     .then((response) => response.json())
@@ -56,13 +58,73 @@ function getData() {
 
       showRecentPosts(data);
       sortPostsByReaction(data);
+      showBestOfTime();
       stopRotateLoading();
       cachedData = data;
     })
     .catch((error) => {
       console.error("Error:", error);
-      errorTxt.innerText = error;
+
+      showError(error);
     });
+}
+
+function showBestPosts(data) {
+  if (showingState !== "Best") return;
+  posts.innerHTML = "";
+
+  data.forEach((post) => {
+    const newPost = document.createElement("div");
+
+    newPost.innerHTML = `<div class="post-box" id=${post.id}>
+    <p class="postdateBest">Best of ${post.date.split(" ")[0]}</p>
+    <p class="userid">${post.user}</p>
+    <p class="postmsg">${post.msg}</p>
+    <p class="postdate">${post.date.split(" ")[2]}</p>
+    <div class="reactions">
+    <button>👍 ${post.l}</button>
+    <button>👎 ${post.d}</button>
+    <button>❤️ ${post.h}</button>
+    <button>😁 ${post.s}</button>
+    <button>😢 ${post.c}</button>
+    </div>
+  </div>`;
+    posts.prepend(newPost);
+  });
+  showError("");
+}
+
+let cachedBest = null;
+//shows the best of all time posts
+function bestOfTime() {
+  fetch(`${ServerURL}/best`)
+    .then((response) => response.json())
+    .then((best) => {
+      console.log("data of the best post:  " + JSON.stringify(best));
+      cachedBest = best;
+      showBestPosts(best);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+
+      showError(error);
+    });
+}
+
+function showBestOfTime() {
+  if (showingState !== "Best") return;
+  recentBtn.style.textDecoration = "none";
+  hotBtn.style.textDecoration = "none";
+  bestBtn.style.textDecoration = "underline hsl(195, 59%, 60%) 2px";
+
+  recentBtn.style.color = "hsl(0, 0%, 80%);";
+  hotBtn.style.color = "hsl(0, 0%, 80%);";
+  bestBtn.style.color = "hsl(0, 0%, 100%);";
+  if (cachedBest === null) {
+    bestOfTime();
+  } else {
+    showBestPosts(cachedBest);
+  }
 }
 
 function showRecentPosts(data) {
@@ -76,9 +138,10 @@ function showRecentPosts(data) {
   recentBtn.style.color = "hsl(0, 0%, 100%);";
   hotBtn.style.color = "hsl(0, 0%, 80%);";
   bestBtn.style.color = "hsl(0, 0%, 80%);";
+  let countOfPosts = 0;
   data.forEach((post) => {
     const newPost = document.createElement("div");
-
+    countOfPosts++;
     newPost.innerHTML = `<div class="post-box" id=${post.id}>
     <p class="userid">${post.user}</p>
     <p class="postmsg">${post.msg}</p>
@@ -93,6 +156,9 @@ function showRecentPosts(data) {
   </div>`;
     posts.prepend(newPost);
   });
+  if (countOfPosts <= 0) {
+    showError("No Posts Today! make the first one.");
+  }
 }
 
 function sortPostsByReaction(data) {
@@ -108,14 +174,14 @@ function sortPostsByReaction(data) {
   hotBtn.style.color = "hsl(0, 0%, 100%);";
   bestBtn.style.color = "hsl(0, 0%, 80%);";
   posts.innerHTML = "";
-
+  let countOfPosts = 0;
   const sortedArrayDescending = data.sort((a, b) => {
     return b.l + b.d + b.h + b.s + b.c - (a.l + a.d + a.h + a.s + a.c);
   });
 
   sortedArrayDescending.forEach((post) => {
     const newPost = document.createElement("div");
-
+    countOfPosts++;
     if (postRank === 1) {
       rankStyle = "style='color: gold;'";
     }
@@ -143,6 +209,9 @@ function sortPostsByReaction(data) {
   </div>`;
     posts.append(newPost);
   });
+  if (countOfPosts <= 0) {
+    showError("No Posts Today! make the first one.");
+  }
 }
 
 const newpostheader = document.getElementById("newpostheader");
@@ -166,6 +235,7 @@ newpostheader.addEventListener("click", () => {
     newpostheader.classList.add("newpostheaderhide");
     newpost.classList.add("newposthide");
     newpostheadericon.classList.add("newpostheaderhide");
+    posterrorTxt.innerText = "";
     newPostIsShowing = false;
   }
 });
@@ -197,6 +267,7 @@ function reaction(emote, postId) {
   if (localStorage.getItem(postId + "voted")) {
     alert("You have already voted!");
   } else {
+    localStorage.setItem(postId + "voted", true);
     var jsonData = {
       e: `${emote}`,
       id: `${postId}`,
@@ -212,13 +283,14 @@ function reaction(emote, postId) {
       .then((data) => {
         console.log(data);
 
-        localStorage.setItem(postId + "voted", true);
         changeReactionState(emote, postId);
         getData();
       })
       .catch((error) => {
         console.error("Error:", error);
-        errorTxt.innerText = error;
+        localStorage.setItem(postId + "voted", false);
+
+        showError(error);
       });
   }
 }
@@ -264,6 +336,7 @@ function changeShowState(state) {
   if (cachedData !== null) {
     showRecentPosts(cachedData);
     sortPostsByReaction(cachedData);
+    showBestOfTime();
   } else {
     getData();
   }
@@ -274,7 +347,6 @@ let rotatedLoading = 90;
 function rotateLoading() {
   const loadingIcon = document.getElementById("loading_icon");
   loadingIcon.style.transform = `rotate(${rotatedLoading++}deg)`;
-  console.log(`rotate(${rotateLoading}deg)`);
 }
 
 function stopRotateLoading() {
@@ -282,4 +354,54 @@ function stopRotateLoading() {
   const loadingIcon = document.getElementById("loading_icon");
   loadingIcon.style.display = "none";
 }
+
+const postdateBestTimerShowMore = document.getElementById(
+  "postdateBestTimerShowMore"
+);
+let isShowBestDetail = false;
+document
+  .getElementById("postdateBestTimerShowMore")
+  .addEventListener("click", () => {
+    if (!isShowBestDetail) {
+      document.getElementById(
+        "postdateBestTimerDetail"
+      ).innerHTML = `At the end of each day, the most reacted post will be selected as the
+  "best" and will be permanetly shown at "Best of Time" section.<br/>
+  All of the other posts will be deleted,
+  <span style='color: rgb(0, 0, 0)'>Forever</span>.`;
+      postdateBestTimerShowMore.innerText = "Show Less...";
+      isShowBestDetail = true;
+    } else {
+      document.getElementById("postdateBestTimerDetail").innerHTML = "";
+      postdateBestTimerShowMore.innerText = "Show More...";
+      isShowBestDetail = false;
+    }
+  });
 // Function to save styles in localStorage
+
+const postdateBestTimer = document.getElementById("postdateBestTimer");
+setInterval(() => {
+  const date = new Date();
+  const remainingSeconds =
+    86400 - date.getHours() * 3600 - date.getMinutes() * 60 - date.getSeconds();
+
+  const remainingHours = Math.floor(remainingSeconds / 3600);
+  const remainingMinutes = Math.floor((remainingSeconds % 3600) / 60);
+  const remainingSecs = remainingSeconds % 60;
+
+  postdateBestTimer.innerText = `${remainingHours
+    .toString()
+    .padStart(2, 0)}:${remainingMinutes
+    .toString()
+    .padStart(2, 0)}:${remainingSecs.toString().padStart(2, 0)}`;
+}, 100);
+
+function showError(errortxt) {
+  errorTxt.innerText = errortxt.toString();
+
+  if (errorTxt.innerText.toString().length > 0) {
+    errorTxt.style.margin = "50px";
+  } else {
+    errorTxt.style.margin = "";
+  }
+}

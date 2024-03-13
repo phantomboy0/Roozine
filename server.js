@@ -4,6 +4,7 @@ const fs = require("@cyclic.sh/s3fs")(
   "cyclic-vast-plum-ladybug-slip-us-west-1"
 );
 const cors = require("cors");
+const cron = require("node-cron");
 const { log } = require("console");
 const app = express();
 const port = 3000;
@@ -58,9 +59,8 @@ app.get("/getData", (req, res) => {
   console.log("Request received at /getData"); // Add this line
 
   try {
-    const data = JSON.parse(fs.readFileSync("db.json", "utf8"));
+    const data = JSON.parse(fs.readFileSync("db.json"));
     res.json(data);
-    chooseBestPostOfTheDay();
   } catch (error) {
     console.error("Error reading database.json:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
@@ -134,7 +134,7 @@ function chooseBestPostOfTheDay() {
   } catch (error) {
     console.error("somthing went wrong on reading db.json: " + error);
   }
-  console.log(TodaysPosts.length);
+
   if (TodaysPosts.lenght < 1) {
     console.log("There is 0 posts to choose today?!");
     return;
@@ -150,8 +150,38 @@ function chooseBestPostOfTheDay() {
       BestPost = post;
     }
   });
+  let existingData = [];
+  try {
+    existingData = JSON.parse(fs.readFileSync("best.json", "utf8"));
+    existingData.push(BestPost);
+    fs.writeFileSync(
+      "best.json",
+      JSON.stringify(existingData, null, 2),
+      "utf8"
+    );
+
+    fs.writeFileSync("db.json", JSON.stringify([], null, 2), "utf8");
+  } catch (error) {
+    console.error("Error reading db.json:", error.message);
+  }
+
   console.log("the best post was: #" + BestPost.id);
 }
+
+app.get("/best", (req, res) => {
+  let best = [];
+  //chooseBestPostOfTheDay();
+
+  try {
+    best = JSON.parse(fs.readFileSync("best.json"));
+    res.json(best);
+  } catch (error) {
+    console.error("error reading best db!: " + error);
+    res.status(500);
+  }
+});
+
+cron.schedule("0 0 * * *", chooseBestPostOfTheDay);
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
