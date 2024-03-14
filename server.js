@@ -1,6 +1,6 @@
 const express = require("express");
 //const fs = require("fs");
-const fs = require("@cyclic.sh/s3fs")("cyclic-clear-yak-pocketbook-eu-west-1");
+const fs = require("fs"); //require("@cyclic.sh/s3fs")("cyclic-clear-yak-pocketbook-eu-west-1");
 const cors = require("cors");
 const cron = require("node-cron");
 const { log } = require("console");
